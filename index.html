@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>手机安全检测</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+            -webkit-user-select: none;
+            user-select: none;
+        }
+        
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, 'Microsoft YaHei', Tahoma, Simsun, sans-serif;
+            background: #000;
+            color: #0f0;
+            height: 100vh;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        /* 初始页面 */
+        #startPage {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .warning-icon {
+            font-size: 80px;
+            margin-bottom: 30px;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+        
+        .title {
+            font-size: 28px;
+            margin-bottom: 15px;
+            color: #ff0000;
+            text-shadow: 0 0 10px #ff0000;
+        }
+        
+        .subtitle {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 40px;
+            line-height: 1.5;
+        }
+        
+        .start-btn {
+            background: linear-gradient(135deg, #ff0000, #ff4444);
+            color: white;
+            border: none;
+            border-radius: 50px;
+            padding: 18px 50px;
+            font-size: 20px;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
+            transition: all 0.3s;
+            margin-top: 20px;
+        }
+        
+        .start-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* 扫描效果页面 */
+        #scanPage {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+        
+        .scan-line {
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, #0f0, transparent);
+            position: absolute;
+            top: 0;
+            animation: scan 2s linear infinite;
+        }
+        
+        @keyframes scan {
+            0% { top: 0; opacity: 0.8; }
+            100% { top: 100%; opacity: 0.2; }
+        }
+        
+        .scan-text {
+            font-size: 22px;
+            margin-bottom: 30px;
+            color: #0f0;
+            text-shadow: 0 0 10px #0f0;
+        }
+        
+        .progress-container {
+            width: 80%;
+            max-width: 300px;
+            background: rgba(255, 255, 255, 0.1);
+            height: 20px;
+            border-radius: 10px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-bar {
+            height: 100%;
+            background: linear-gradient(90deg, #0f0, #0a0);
+            width: 0%;
+            transition: width 0.3s;
+        }
+        
+        .percentage {
+            font-size: 24px;
+            margin: 10px 0;
+            color: #0f0;
+        }
+        
+        .virus-count {
+            font-size: 16px;
+            color: #ff5555;
+            margin-top: 20px;
+        }
+        
+        /* 结果页面 */
+        #resultPage {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: #000;
+        }
+        
+        .result-icon {
+            font-size: 100px;
+            margin-bottom: 30px;
+        }
+        
+        .result-title {
+            font-size: 32px;
+            margin-bottom: 20px;
+            color: #ff0000;
+        }
+        
+        .result-text {
+            font-size: 18px;
+            color: #ccc;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .action-buttons {
+            display: flex;
+            gap: 15px;
+            margin-top: 30px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .action-btn {
+            padding: 15px 30px;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .danger-btn {
+            background: linear-gradient(135deg, #ff0000, #cc0000);
+            color: white;
+        }
+        
+        .safe-btn {
+            background: linear-gradient(135deg, #00cc00, #009900);
+            color: white;
+        }
+        
+        .action-btn:active {
+            transform: scale(0.95);
+        }
+        
+        /* 最后玩笑页面 */
+        #jokePage {
+            display: none;
+            height: 100vh;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        
+        .joke-icon {
+            font-size: 100px;
+            margin-bottom: 30px;
+            animation: bounce 1s infinite alternate;
+        }
+        
+        @keyframes bounce {
+            from { transform: translateY(0); }
+            to { transform: translateY(-20px); }
+        }
+        
+        .joke-title {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+        
+        .joke-text {
+            font-size: 20px;
+            margin-bottom: 30px;
+            line-height: 1.6;
+        }
+        
+        .share-btn {
+            background: white;
+            color: #667eea;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 50px;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 30px;
+            cursor: pointer;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+        
+        /* 错误代码 */
+        .error-code {
+            position: fixed;
+            font-size: 12px;
+            color: #0f0;
+            opacity: 0.3;
+            pointer-events: none;
+        }
+        
+        /* 微信提示 */
+        .wechat-tip {
+            position: fixed;
+            bottom: 20px;
+            left: 0;
+            right: 0;
+            text-align: center;
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 14px;
+            padding: 0 20px;
+        }
+    </style>
+</head>
+<body>
+    <!-- 初始页面 -->
+    <div id="startPage">
+        <div class="warning-icon">⚠️</div>
+        <h1 class="title">手机安全检测</h1>
+        <p class="subtitle">检测到您的手机可能存在安全隐患<br>建议立即进行全面扫描</p>
+        <button class="start-btn" onclick="startScan()">立即扫描</button>
+        <div class="wechat-tip">提示：这只是一个娱乐页面，不会对您的手机造成任何影响</div>
+    </div>
+    
+    <!-- 扫描页面 -->
+    <div id="scanPage">
+        <div class="scan-line"></div>
+        <div class="scan-text">正在扫描您的手机...</div>
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+        <div class="percentage" id="percentage">0%</div>
+        <div class="virus-count" id="virusCount">已检测到病毒：0个</div>
+    </div>
+    
+    <!-- 结果页面 -->
+    <div id="resultPage">
+        <div class="result-icon">🚨</div>
+        <h1 class="result-title">检测结果：危险！</h1>
+        <p class="result-text">
+            检测到您的手机存在严重安全威胁：<br>
+            • 发现15个恶意软件<br>
+            • 3个高风险漏洞<br>
+            • 个人数据可能已泄露<br>
+            • 电池寿命严重受损
+        </p>
+        <div class="action-buttons">
+            <button class="action-btn danger-btn" onclick="showJoke()">紧急修复</button>
+            <button class="action-btn safe-btn" onclick="showJoke()">忽略风险</button>
+        </div>
+    </div>
+    
+    <!-- 玩笑页面 -->
+    <div id="jokePage">
+        <div class="joke-icon">😂</div>
+        <h1 class="joke-title">开玩笑的！</h1>
+        <p class="joke-text">
+            这世界只有一个帅哥！<br>
+            那就是可乐哥，贵州最帅<br>
+            分享出去  不然  水鱼安排！
+        </p>
+        <button class="share-btn" onclick="sharePage()">分享给朋友</button>
+        <button class="action-btn safe-btn" onclick="restart()" style="margin-top: 20px;">再玩一次</button>
+        <div class="wechat-tip">提示：长按页面可以分享给微信好友</div>
+    </div>
+    
+    <script>
+        // 生成随机错误代码
+        function generateErrorCodes() {
+            const codes = [
+                "VIRUS_DETECTED: Android.Prank.2024",
+                "ERROR: System integrity compromised",
+                "WARNING: Battery health critical",
+                "ALERT: Data breach detected",
+                "THREAT: Ransomware activity found"
+            ];
+            
+            for(let i = 0; i < 20; i++) {
+                const code = document.createElement('div');
+                code.className = 'error-code';
+                code.textContent = codes[Math.floor(Math.random() * codes.length)];
+                code.style.left = Math.random() * 100 + '%';
+                code.style.top = Math.random() * 100 + '%';
+                document.body.appendChild(code);
+            }
+        }
+        
+        // 开始扫描
+        function startScan() {
+            document.getElementById('startPage').style.display = 'none';
+            document.getElementById('scanPage').style.display = 'flex';
+            
+            generateErrorCodes();
+            
+            let progress = 0;
+            let virusCount = 0;
+            const progressBar = document.getElementById('progressBar');
+            const percentage = document.getElementById('percentage');
+            const virusCountElement = document.getElementById('virusCount');
+            
+            const interval = setInterval(() => {
+                progress += Math.random() * 3 + 1;
+                if(progress >= 100) {
+                    progress = 100;
+                    clearInterval(interval);
+                    
+                    // 扫描完成，显示结果
+                    setTimeout(() => {
+                        document.getElementById('scanPage').style.display = 'none';
+                        document.getElementById('resultPage').style.display = 'flex';
+                    }, 1000);
+                }
+                
+                // 随机增加病毒数量
+                if(Math.random() > 0.7 && virusCount < 15) {
+                    virusCount++;
+                    virusCountElement.textContent = `已检测到病毒：${virusCount}个`;
+                    
+                    // 添加震动效果（如果支持）
+                    if(navigator.vibrate) {
+                        navigator.vibrate(50);
+                    }
+                }
+                
+                progressBar.style.width = progress + '%';
+                percentage.textContent = Math.round(progress) + '%';
+            }, 100);
+        }
+        
+        // 显示玩笑页面
+        function showJoke() {
+            document.getElementById('resultPage').style.display = 'none';
+            document.getElementById('jokePage').style.display = 'flex';
+            
+            // 添加庆祝效果
+            setTimeout(() => {
+                for(let i = 0; i < 50; i++) {
+                    createConfetti();
+                }
+            }, 500);
+        }
+        
+        // 创建彩色纸屑效果
+        function createConfetti() {
+            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
+            const confetti = document.createElement('div');
+            confetti.style.cssText = `
+                position: fixed;
+                width: 10px;
+                height: 10px;
+                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                border-radius: 50%;
+                top: -10px;
+                left: ${Math.random() * 100}%;
+                z-index: 1000;
+                pointer-events: none;
+            `;
+            document.body.appendChild(confetti);
+            
+            // 动画
+            const animation = confetti.animate([
+                { transform: 'translateY(0) rotate(0deg)', opacity: 1 },
+                { transform: `translateY(${window.innerHeight}px) rotate(${Math.random() * 360}deg)`, opacity: 0 }
+            ], {
+                duration: Math.random() * 2000 + 1000,
+                easing: 'cubic-bezier(0.215, 0.61, 0.355, 1)'
+            });
+            
+            animation.onfinish = () => confetti.remove();
+        }
+        
+        // 分享页面
+        function sharePage() {
+            const shareText = "哈哈，我被一个手机安全检测页面骗了！😂 你也来试试看！";
+            const pageUrl = window.location.href;
+            
+            // 尝试使用Web Share API
+            if (navigator.share) {
+                navigator.share({
+                    title: '手机安全检测恶搞',
+                    text: shareText,
+                    url: pageUrl
+                })
+                .then(() => console.log('分享成功'))
+                .catch((error) => {
+                    // 如果分享失败，复制到剪贴板
+                    copyToClipboard(shareText + '\n' + pageUrl);
+                });
+            } else {
+                // 如果不支持Web Share API，则复制到剪贴板
+                copyToClipboard(shareText + '\n' + pageUrl);
+                alert('分享内容已复制到剪贴板！\n\n快去粘贴给朋友吧！');
+            }
+        }
+        
+        // 复制到剪贴板
+        function copyToClipboard(text) {
+            const textarea = document.createElement('textarea');
+            textarea.value = text;
+            document.body.appendChild(textarea);
+            textarea.select();
+            document.execCommand('copy');
+            document.body.removeChild(textarea);
+        }
+        
+        // 重新开始
+        function restart() {
+            // 移除所有错误代码
+            document.querySelectorAll('.error-code').forEach(el => el.remove());
+            
+            // 重置页面显示
+            document.getElementById('jokePage').style.display = 'none';
+            document.getElementById('startPage').style.display = 'flex';
+            document.getElementById('scanPage').style.display = 'none';
+            document.getElementById('resultPage').style.display = 'none';
+            
+            // 重置进度条
+            document.getElementById('progressBar').style.width = '0%';
+            document.getElementById('percentage').textContent = '0%';
+            document.getElementById('virusCount').textContent = '已检测到病毒：0个';
+        }
+        
+        // 阻止常见快捷键
+        document.addEventListener('keydown', (e) => {
+            // 阻止F12、Ctrl+Shift+I等开发者工具快捷键
+            if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
+                e.preventDefault();
+                alert('调试功能已被禁用！');
+            }
+            
+            // 阻止页面刷新
+            if(e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
+                e.preventDefault();
+                alert('页面刷新已被阻止！');
+            }
+        });
+        
+        // 阻止右键菜单
+        document.addEventListener('contextmenu', e => {
+            e.preventDefault();
+            alert('右键菜单已被禁用！');
+        });
+        
+        // 页面加载时初始化
+        window.onload = function() {
+            // 添加一些初始效果
+            setTimeout(() => {
+                document.querySelector('.warning-icon').style.animation = 'pulse 1s infinite';
+            }, 500);
+            
+            // 为微信添加特殊提示
+            const isWechat = /MicroMessenger/i.test(navigator.userAgent);
+            if(isWechat) {
+                const tip = document.querySelector('.wechat-tip');
+                tip.innerHTML = '提示：点击右上角"..."可以分享给朋友<br>这只是一个娱乐页面，不会对您的手机造成任何影响';
+            }
+        };
+    </script>
+</body>
+</html>
