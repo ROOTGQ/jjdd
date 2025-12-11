@@ -2,414 +2,736 @@
 <html lang="zh-CN">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>手机安全检测</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>✨ 圣诞快乐 ✨</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            -webkit-tap-highlight-color: transparent;
-            -webkit-user-select: none;
-            user-select: none;
         }
         
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'PingFang SC', 'Helvetica Neue', STHeiti, 'Microsoft YaHei', Tahoma, Simsun, sans-serif;
-            background: #000;
-            color: #0f0;
-            height: 100vh;
-            overflow: hidden;
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: linear-gradient(180deg, #0c1e3e 0%, #1a3a5f 100%);
+            color: white;
+            min-height: 100vh;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        /* 标题区域 */
+        .header {
+            margin-bottom: 30px;
+            animation: fadeIn 2s ease;
+        }
+        
+        .header h1 {
+            font-size: 3.5rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 20px rgba(255, 255, 255, 0.5);
+            background: linear-gradient(90deg, #ff3366, #ff9966, #33ccff, #66ff99);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            background-size: 400% 400%;
+            animation: gradient 8s ease infinite;
+        }
+        
+        @keyframes gradient {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .header p {
+            font-size: 1.3rem;
+            color: #a3d9ff;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        
+        /* 圣诞树容器 */
+        .tree-container {
+            position: relative;
+            display: inline-block;
+            margin: 40px 0;
+            animation: fadeIn 3s ease;
+        }
+        
+        /* 圣诞树 */
+        .tree {
+            position: relative;
+            width: 0;
+            height: 0;
+            border-left: 120px solid transparent;
+            border-right: 120px solid transparent;
+            border-bottom: 200px solid #0a7e0a;
+            margin: 0 auto;
+        }
+        
+        .tree::before {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 100px solid transparent;
+            border-right: 100px solid transparent;
+            border-bottom: 180px solid #0b9e0b;
+            top: 40px;
+            left: -100px;
+        }
+        
+        .tree::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 0;
+            border-left: 80px solid transparent;
+            border-right: 80px solid transparent;
+            border-bottom: 150px solid #0cbf0c;
+            top: 80px;
+            left: -80px;
+        }
+        
+        /* 树干 */
+        .trunk {
+            width: 40px;
+            height: 80px;
+            background: #8B4513;
+            margin: -10px auto 0;
+            border-radius: 0 0 10px 10px;
             position: relative;
         }
         
-        /* 初始页面 */
-        #startPage {
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
-        
-        .warning-icon {
-            font-size: 80px;
-            margin-bottom: 30px;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.2); }
-        }
-        
-        .title {
-            font-size: 28px;
-            margin-bottom: 15px;
-            color: #ff0000;
-            text-shadow: 0 0 10px #ff0000;
-        }
-        
-        .subtitle {
-            font-size: 18px;
-            color: #ccc;
-            margin-bottom: 40px;
-            line-height: 1.5;
-        }
-        
-        .start-btn {
-            background: linear-gradient(135deg, #ff0000, #ff4444);
-            color: white;
-            border: none;
-            border-radius: 50px;
-            padding: 18px 50px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            box-shadow: 0 10px 20px rgba(255, 0, 0, 0.3);
-            transition: all 0.3s;
-            margin-top: 20px;
-        }
-        
-        .start-btn:active {
-            transform: scale(0.95);
-        }
-        
-        /* 扫描效果页面 */
-        #scanPage {
-            display: none;
-            height: 100vh;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-        }
-        
-        .scan-line {
-            width: 100%;
-            height: 3px;
-            background: linear-gradient(90deg, transparent, #0f0, transparent);
+        /* 树上的装饰球 */
+        .ornament {
             position: absolute;
-            top: 0;
-            animation: scan 2s linear infinite;
+            width: 25px;
+            height: 25px;
+            border-radius: 50%;
+            z-index: 5;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.7);
+            transition: transform 0.3s ease;
+            cursor: pointer;
         }
         
-        @keyframes scan {
-            0% { top: 0; opacity: 0.8; }
-            100% { top: 100%; opacity: 0.2; }
+        .ornament:hover {
+            transform: scale(1.3);
         }
         
-        .scan-text {
-            font-size: 22px;
-            margin-bottom: 30px;
-            color: #0f0;
-            text-shadow: 0 0 10px #0f0;
+        .ornament.red { background: radial-gradient(circle at 30% 30%, #ff3333, #cc0000); }
+        .ornament.blue { background: radial-gradient(circle at 30% 30%, #3366ff, #0033cc); }
+        .ornament.gold { background: radial-gradient(circle at 30% 30%, #ffcc00, #ff9900); }
+        .ornament.silver { background: radial-gradient(circle at 30% 30%, #e6e6e6, #b3b3b3); }
+        .ornament.purple { background: radial-gradient(circle at 30% 30%, #cc66ff, #9900cc); }
+        
+        /* 树顶星星 */
+        .star {
+            position: absolute;
+            top: -40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: gold;
+            font-size: 60px;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+            animation: twinkle 1.5s infinite alternate;
+            z-index: 10;
         }
         
-        .progress-container {
-            width: 80%;
-            max-width: 300px;
-            background: rgba(255, 255, 255, 0.1);
-            height: 20px;
-            border-radius: 10px;
-            overflow: hidden;
-            margin: 20px 0;
+        @keyframes twinkle {
+            0% { opacity: 0.7; transform: translateX(-50%) scale(1); }
+            100% { opacity: 1; transform: translateX(-50%) scale(1.1); }
         }
         
-        .progress-bar {
-            height: 100%;
-            background: linear-gradient(90deg, #0f0, #0a0);
-            width: 0%;
-            transition: width 0.3s;
-        }
-        
-        .percentage {
-            font-size: 24px;
-            margin: 10px 0;
-            color: #0f0;
-        }
-        
-        .virus-count {
-            font-size: 16px;
-            color: #ff5555;
-            margin-top: 20px;
-        }
-        
-        /* 结果页面 */
-        #resultPage {
-            display: none;
-            height: 100vh;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            background: #000;
-        }
-        
-        .result-icon {
-            font-size: 100px;
-            margin-bottom: 30px;
-        }
-        
-        .result-title {
-            font-size: 32px;
-            margin-bottom: 20px;
-            color: #ff0000;
-        }
-        
-        .result-text {
-            font-size: 18px;
-            color: #ccc;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .action-buttons {
+        /* 树下礼物 */
+        .gifts {
             display: flex;
-            gap: 15px;
+            justify-content: center;
+            gap: 20px;
             margin-top: 30px;
             flex-wrap: wrap;
-            justify-content: center;
         }
         
-        .action-btn {
-            padding: 15px 30px;
-            border: none;
-            border-radius: 10px;
-            font-size: 18px;
-            font-weight: bold;
+        .gift {
+            width: 80px;
+            height: 80px;
+            position: relative;
             cursor: pointer;
-            transition: all 0.3s;
+            transition: transform 0.5s ease;
         }
         
-        .danger-btn {
-            background: linear-gradient(135deg, #ff0000, #cc0000);
-            color: white;
+        .gift:hover {
+            transform: translateY(-20px);
         }
         
-        .safe-btn {
-            background: linear-gradient(135deg, #00cc00, #009900);
-            color: white;
+        .gift-box {
+            width: 100%;
+            height: 70%;
+            position: absolute;
+            bottom: 0;
+            border-radius: 5px;
         }
         
-        .action-btn:active {
-            transform: scale(0.95);
+        .gift-lid {
+            width: 110%;
+            height: 30%;
+            position: absolute;
+            top: 0;
+            left: -5%;
+            border-radius: 5px;
         }
         
-        /* 最后玩笑页面 */
-        #jokePage {
-            display: none;
-            height: 100vh;
-            flex-direction: column;
+        .gift1 .gift-box { background: linear-gradient(135deg, #ff3366, #ff6699); }
+        .gift1 .gift-lid { background: linear-gradient(135deg, #ff6699, #ff3366); }
+        
+        .gift2 .gift-box { background: linear-gradient(135deg, #33ccff, #3366ff); }
+        .gift2 .gift-lid { background: linear-gradient(135deg, #3366ff, #33ccff); }
+        
+        .gift3 .gift-box { background: linear-gradient(135deg, #66ff99, #33cc33); }
+        .gift3 .gift-lid { background: linear-gradient(135deg, #33cc33, #66ff99); }
+        
+        .gift4 .gift-box { background: linear-gradient(135deg, #ffcc00, #ff9900); }
+        .gift4 .gift-lid { background: linear-gradient(135deg, #ff9900, #ffcc00); }
+        
+        /* 灯光 */
+        .light {
+            position: absolute;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            z-index: 4;
+            animation: lightBlink 2s infinite alternate;
+        }
+        
+        @keyframes lightBlink {
+            0% { opacity: 0.3; box-shadow: 0 0 5px currentColor; }
+            100% { opacity: 1; box-shadow: 0 0 15px currentColor; }
+        }
+        
+        /* 控制面板 */
+        .controls {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 25px;
+            margin: 40px auto;
+            max-width: 600px;
+            display: flex;
+            flex-wrap: wrap;
             justify-content: center;
-            align-items: center;
-            text-align: center;
-            padding: 20px;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            color: white;
+            gap: 15px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
         
-        .joke-icon {
-            font-size: 100px;
-            margin-bottom: 30px;
-            animation: bounce 1s infinite alternate;
-        }
-        
-        @keyframes bounce {
-            from { transform: translateY(0); }
-            to { transform: translateY(-20px); }
-        }
-        
-        .joke-title {
-            font-size: 36px;
-            margin-bottom: 20px;
-        }
-        
-        .joke-text {
-            font-size: 20px;
-            margin-bottom: 30px;
-            line-height: 1.6;
-        }
-        
-        .share-btn {
-            background: white;
-            color: #667eea;
-            padding: 15px 30px;
+        .btn {
+            padding: 12px 25px;
             border: none;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 1.1rem;
             font-weight: bold;
-            margin-top: 30px;
             cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(90deg, #ff3366, #ff9966);
+        }
+        
+        .btn-secondary {
+            background: linear-gradient(90deg, #33ccff, #3366ff);
+        }
+        
+        .btn-success {
+            background: linear-gradient(90deg, #66ff99, #33cc33);
+        }
+        
+        .btn:hover {
+            transform: translateY(-5px);
             box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
         }
         
-        /* 错误代码 */
-        .error-code {
+        /* 下雪效果 */
+        .snowflakes {
             position: fixed;
-            font-size: 12px;
-            color: #0f0;
-            opacity: 0.3;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
             pointer-events: none;
+            z-index: 1;
         }
         
-        /* 微信提示 */
-        .wechat-tip {
+        .snowflake {
+            position: absolute;
+            background: white;
+            border-radius: 50%;
+            opacity: 0.8;
+            filter: blur(1px);
+            animation: fall linear infinite;
+        }
+        
+        @keyframes fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+            }
+        }
+        
+        /* 祝福语区域 */
+        .greetings {
+            margin-top: 40px;
+            padding: 30px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 20px;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .greetings h3 {
+            font-size: 1.8rem;
+            margin-bottom: 20px;
+            color: #a3d9ff;
+        }
+        
+        #greeting-text {
+            font-size: 1.3rem;
+            line-height: 1.8;
+            min-height: 80px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: 15px;
+            border-left: 5px solid #ff3366;
+        }
+        
+        /* 页脚 */
+        .footer {
+            margin-top: 50px;
+            padding: 20px;
+            color: #a3d9ff;
+            font-size: 1rem;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            width: 100%;
+        }
+        
+        /* 动画效果 */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        /* 响应式设计 */
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 2.5rem;
+            }
+            
+            .tree {
+                border-left: 80px solid transparent;
+                border-right: 80px solid transparent;
+                border-bottom: 150px solid #0a7e0a;
+            }
+            
+            .tree::before {
+                border-left: 70px solid transparent;
+                border-right: 70px solid transparent;
+                border-bottom: 130px solid #0b9e0b;
+                left: -70px;
+            }
+            
+            .tree::after {
+                border-left: 60px solid transparent;
+                border-right: 60px solid transparent;
+                border-bottom: 110px solid #0cbf0c;
+                left: -60px;
+            }
+            
+            .ornament {
+                width: 18px;
+                height: 18px;
+            }
+            
+            .controls {
+                padding: 20px;
+            }
+            
+            .btn {
+                padding: 10px 20px;
+                font-size: 1rem;
+            }
+        }
+        
+        /* 音乐播放器样式 */
+        .music-player {
             position: fixed;
             bottom: 20px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            color: rgba(255, 255, 255, 0.5);
-            font-size: 14px;
-            padding: 0 20px;
+            right: 20px;
+            z-index: 100;
+            background: rgba(0, 0, 0, 0.7);
+            border-radius: 50px;
+            padding: 10px 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+        
+        .music-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+        
+        .music-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .volume-control {
+            width: 100px;
         }
     </style>
 </head>
 <body>
-    <!-- 初始页面 -->
-    <div id="startPage">
-        <div class="warning-icon">⚠️</div>
-        <h1 class="title">手机安全检测</h1>
-        <p class="subtitle">检测到您的手机可能存在安全隐患<br>建议立即进行全面扫描</p>
-        <button class="start-btn" onclick="startScan()">立即扫描</button>
-        <div class="wechat-tip">提示：这只是一个娱乐页面，不会对您的手机造成任何影响</div>
+    <!-- 下雪效果 -->
+    <div class="snowflakes" id="snowflakes"></div>
+    
+    <!-- 音乐播放器 -->
+    <div class="music-player">
+        <button class="music-btn" id="playBtn">
+            <i class="fas fa-play"></i>
+        </button>
+        <button class="music-btn" id="pauseBtn">
+            <i class="fas fa-pause"></i>
+        </button>
+        <input type="range" min="0" max="100" value="50" class="volume-control" id="volumeControl">
     </div>
     
-    <!-- 扫描页面 -->
-    <div id="scanPage">
-        <div class="scan-line"></div>
-        <div class="scan-text">正在扫描您的手机...</div>
-        <div class="progress-container">
-            <div class="progress-bar" id="progressBar"></div>
+    <div class="container">
+        <!-- 标题区域 -->
+        <header class="header">
+            <h1>🎄 圣诞快乐 🎄</h1>
+            <p>愿这个圣诞节充满欢乐、和平与爱！点击装饰品和礼物会有惊喜哦~</p>
+        </header>
+        
+        <!-- 圣诞树区域 -->
+        <div class="tree-container">
+            <!-- 树顶星星 -->
+            <div class="star" id="star">
+                <i class="fas fa-star"></i>
+            </div>
+            
+            <!-- 圣诞树 -->
+            <div class="tree" id="tree">
+                <!-- 装饰球将通过JavaScript动态添加 -->
+            </div>
+            
+            <!-- 树干 -->
+            <div class="trunk"></div>
+            
+            <!-- 灯光将通过JavaScript动态添加 -->
         </div>
-        <div class="percentage" id="percentage">0%</div>
-        <div class="virus-count" id="virusCount">已检测到病毒：0个</div>
-    </div>
-    
-    <!-- 结果页面 -->
-    <div id="resultPage">
-        <div class="result-icon">🚨</div>
-        <h1 class="result-title">检测结果：危险！</h1>
-        <p class="result-text">
-            检测到您的手机存在严重安全威胁：<br>
-            • 发现15个恶意软件<br>
-            • 3个高风险漏洞<br>
-            • 个人数据可能已泄露<br>
-            • 电池寿命严重受损
-        </p>
-        <div class="action-buttons">
-            <button class="action-btn danger-btn" onclick="showJoke()">紧急修复</button>
-            <button class="action-btn safe-btn" onclick="showJoke()">忽略风险</button>
+        
+        <!-- 树下礼物 -->
+        <div class="gifts">
+            <div class="gift gift1" onclick="openGift(1)">
+                <div class="gift-lid"></div>
+                <div class="gift-box"></div>
+            </div>
+            <div class="gift gift2" onclick="openGift(2)">
+                <div class="gift-lid"></div>
+                <div class="gift-box"></div>
+            </div>
+            <div class="gift gift3" onclick="openGift(3)">
+                <div class="gift-lid"></div>
+                <div class="gift-box"></div>
+            </div>
+            <div class="gift gift4" onclick="openGift(4)">
+                <div class="gift-lid"></div>
+                <div class="gift-box"></div>
+            </div>
         </div>
+        
+        <!-- 控制面板 -->
+        <div class="controls">
+            <button class="btn btn-primary" onclick="addOrnament()">
+                <i class="fas fa-plus-circle"></i> 添加装饰球
+            </button>
+            <button class="btn btn-secondary" onclick="toggleLights()">
+                <i class="fas fa-lightbulb"></i> 切换灯光
+            </button>
+            <button class="btn btn-success" onclick="changeGreeting()">
+                <i class="fas fa-comment-alt"></i> 新祝福语
+            </button>
+            <button class="btn btn-primary" onclick="toggleSnow()">
+                <i class="fas fa-snowflake"></i> 切换雪花
+            </button>
+        </div>
+        
+        <!-- 祝福语区域 -->
+        <div class="greetings">
+            <h3><i class="fas fa-gift"></i> 圣诞祝福</h3>
+            <div id="greeting-text">
+                愿圣诞的欢乐和温馨，带给您和您的家人无尽的幸福！愿新年的钟声，敲响您心中快乐的音符，幸运与平安，如春天的脚步紧紧相随！
+            </div>
+        </div>
+        
+        <!-- 页脚 -->
+        <footer class="footer">
+            <p>🎅 圣诞快乐，新年进步！ 🎅</p>
+            <p>Made with ❤️ | 点击装饰品和礼物互动 | 刷新页面重新开始</p>
+        </footer>
     </div>
+
+    <!-- 音频元素 -->
+    <audio id="bgMusic" loop>
+        <source src="https://assets.mixkit.co/music/preview/mixkit-jingle-bells-311.mp3" type="audio/mpeg">
+    </audio>
     
-    <!-- 玩笑页面 -->
-    <div id="jokePage">
-        <div class="joke-icon">😂</div>
-        <h1 class="joke-title">开玩笑的！</h1>
-        <p class="joke-text">
-            这世界只有一个帅哥！<br>
-            那就是可乐哥，贵州最帅<br>
-            分享出去  不然  水鱼安排！
-        </p>
-        <button class="share-btn" onclick="sharePage()">分享给朋友</button>
-        <button class="action-btn safe-btn" onclick="restart()" style="margin-top: 20px;">再玩一次</button>
-        <div class="wechat-tip">提示：长按页面可以分享给微信好友</div>
-    </div>
+    <audio id="ornamentSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-magic-sparkles-300.mp3" type="audio/mpeg">
+    </audio>
     
+    <audio id="giftSound">
+        <source src="https://assets.mixkit.co/sfx/preview/mixkit-winning-chimes-2015.mp3" type="audio/mpeg">
+    </audio>
+
     <script>
-        // 生成随机错误代码
-        function generateErrorCodes() {
-            const codes = [
-                "VIRUS_DETECTED: Android.Prank.2024",
-                "ERROR: System integrity compromised",
-                "WARNING: Battery health critical",
-                "ALERT: Data breach detected",
-                "THREAT: Ransomware activity found"
+        // 初始化变量
+        let lightsOn = true;
+        let snowActive = true;
+        let musicPlaying = false;
+        const tree = document.getElementById('tree');
+        const star = document.getElementById('star');
+        const snowflakesContainer = document.getElementById('snowflakes');
+        const bgMusic = document.getElementById('bgMusic');
+        const ornamentSound = document.getElementById('ornamentSound');
+        const giftSound = document.getElementById('giftSound');
+        const greetingText = document.getElementById('greetingText');
+        
+        // 圣诞祝福语库
+        const greetings = [
+            "愿圣诞的欢乐和温馨，带给您和您的家人无尽的幸福！愿新年的钟声，敲响您心中快乐的音符，幸运与平安，如春天的脚步紧紧相随！",
+            "在这美好的圣诞佳节，真诚地祝福您和您的家人圣诞快乐，愿您的生活充满阳光，事业蒸蒸日上，家庭幸福美满！",
+            "雪花飘，圣诞到。铃铛响，驯鹿跑。快乐至，吉祥到。圣诞老人带礼物，幸福祝福身边绕。祝您圣诞快乐，新年更好！",
+            "圣诞树上耀眼的彩灯，那是我祈祷你平安一生；圣诞夜里悠扬的钟声，那是我祝福你快乐一生。圣诞快乐！",
+            "平安夜的每一朵雪花飘下，每一个烟火燃起，每一秒时间流动，每一份思念传送，都代表着我想要送给您的每一个祝福！",
+            "圣诞的钟声即将响起，落叶飞舞着，温馨洋溢着，真情荡漾着，祝福伴随着，愿您度过这最美好的圣诞佳节！",
+            "圣诞来临，祝您新年快乐！愿您时时刻刻幸福欢乐！愿圣诞的温馨带给您祥和与喜悦，祝您圣诞快乐，新年充满幸福和成功！",
+            "圣诞到了，祝您的身体像圣诞老人一样健康，事业像雪橇车一样没有阻力，钞票像圣诞老人包袱里的礼物一样无穷无尽！"
+        ];
+        
+        // 装饰球颜色
+        const ornamentColors = ['red', 'blue', 'gold', 'silver', 'purple'];
+        
+        // 灯光颜色
+        const lightColors = ['#ff3333', '#33ff33', '#3333ff', '#ffff33', '#ff33ff', '#33ffff'];
+        
+        // 初始化圣诞树装饰
+        function initializeTree() {
+            // 添加装饰球
+            const ornamentPositions = [
+                {top: '30%', left: '40%'}, {top: '25%', left: '60%'}, {top: '40%', left: '30%'},
+                {top: '35%', left: '70%'}, {top: '50%', left: '45%'}, {top: '55%', left: '65%'},
+                {top: '60%', left: '35%'}, {top: '65%', left: '55%'}, {top: '70%', left: '40%'},
+                {top: '75%', left: '60%'}
             ];
             
-            for(let i = 0; i < 20; i++) {
-                const code = document.createElement('div');
-                code.className = 'error-code';
-                code.textContent = codes[Math.floor(Math.random() * codes.length)];
-                code.style.left = Math.random() * 100 + '%';
-                code.style.top = Math.random() * 100 + '%';
-                document.body.appendChild(code);
+            ornamentPositions.forEach(pos => {
+                addOrnamentAtPosition(pos.top, pos.left);
+            });
+            
+            // 添加灯光
+            const lightPositions = [
+                {top: '35%', left: '50%'}, {top: '45%', left: '40%'}, {top: '45%', left: '60%'},
+                {top: '55%', left: '30%'}, {top: '55%', left: '70%'}, {top: '65%', left: '45%'},
+                {top: '65%', left: '65%'}, {top: '75%', left: '35%'}, {top: '75%', left: '55%'},
+                {top: '85%', left: '45%'}, {top: '85%', left: '65%'}
+            ];
+            
+            lightPositions.forEach(pos => {
+                addLightAtPosition(pos.top, pos.left);
+            });
+            
+            // 初始化雪花
+            createSnowflakes();
+            
+            // 设置音乐音量
+            bgMusic.volume = 0.5;
+            ornamentSound.volume = 0.7;
+            giftSound.volume = 0.7;
+        }
+        
+        // 在指定位置添加装饰球
+        function addOrnamentAtPosition(top, left) {
+            const ornament = document.createElement('div');
+            ornament.className = `ornament ${ornamentColors[Math.floor(Math.random() * ornamentColors.length)]}`;
+            ornament.style.top = top;
+            ornament.style.left = left;
+            ornament.onclick = function() {
+                ornamentSound.currentTime = 0;
+                ornamentSound.play();
+                this.style.transform = 'scale(1.5)';
+                setTimeout(() => {
+                    this.style.transform = 'scale(1)';
+                }, 300);
+                
+                // 随机改变颜色
+                this.className = `ornament ${ornamentColors[Math.floor(Math.random() * ornamentColors.length)]}`;
+            };
+            tree.appendChild(ornament);
+        }
+        
+        // 添加随机装饰球
+        function addOrnament() {
+            const top = `${20 + Math.random() * 70}%`;
+            const left = `${30 + Math.random() * 40}%`;
+            addOrnamentAtPosition(top, left);
+        }
+        
+        // 在指定位置添加灯光
+        function addLightAtPosition(top, left) {
+            const light = document.createElement('div');
+            light.className = 'light';
+            light.style.top = top;
+            light.style.left = left;
+            light.style.backgroundColor = lightColors[Math.floor(Math.random() * lightColors.length)];
+            light.style.color = light.style.backgroundColor;
+            tree.appendChild(light);
+        }
+        
+        // 切换灯光
+        function toggleLights() {
+            const lights = document.querySelectorAll('.light');
+            lightsOn = !lightsOn;
+            
+            lights.forEach(light => {
+                if (lightsOn) {
+                    light.style.animation = 'lightBlink 2s infinite alternate';
+                    light.style.opacity = '1';
+                } else {
+                    light.style.animation = 'none';
+                    light.style.opacity = '0.3';
+                }
+            });
+        }
+        
+        // 创建雪花
+        function createSnowflakes() {
+            // 清除现有雪花
+            snowflakesContainer.innerHTML = '';
+            
+            if (!snowActive) return;
+            
+            const snowflakeCount = 100;
+            
+            for (let i = 0; i < snowflakeCount; i++) {
+                const snowflake = document.createElement('div');
+                snowflake.className = 'snowflake';
+                
+                // 随机大小
+                const size = Math.random() * 10 + 5;
+                snowflake.style.width = `${size}px`;
+                snowflake.style.height = `${size}px`;
+                
+                // 随机位置
+                snowflake.style.left = `${Math.random() * 100}%`;
+                
+                // 随机透明度
+                snowflake.style.opacity = Math.random() * 0.7 + 0.3;
+                
+                // 随机动画时长
+                const duration = Math.random() * 10 + 10;
+                snowflake.style.animationDuration = `${duration}s`;
+                
+                // 随机动画延迟
+                snowflake.style.animationDelay = `${Math.random() * 5}s`;
+                
+                snowflakesContainer.appendChild(snowflake);
             }
         }
         
-        // 开始扫描
-        function startScan() {
-            document.getElementById('startPage').style.display = 'none';
-            document.getElementById('scanPage').style.display = 'flex';
-            
-            generateErrorCodes();
-            
-            let progress = 0;
-            let virusCount = 0;
-            const progressBar = document.getElementById('progressBar');
-            const percentage = document.getElementById('percentage');
-            const virusCountElement = document.getElementById('virusCount');
-            
-            const interval = setInterval(() => {
-                progress += Math.random() * 3 + 1;
-                if(progress >= 100) {
-                    progress = 100;
-                    clearInterval(interval);
-                    
-                    // 扫描完成，显示结果
-                    setTimeout(() => {
-                        document.getElementById('scanPage').style.display = 'none';
-                        document.getElementById('resultPage').style.display = 'flex';
-                    }, 1000);
-                }
-                
-                // 随机增加病毒数量
-                if(Math.random() > 0.7 && virusCount < 15) {
-                    virusCount++;
-                    virusCountElement.textContent = `已检测到病毒：${virusCount}个`;
-                    
-                    // 添加震动效果（如果支持）
-                    if(navigator.vibrate) {
-                        navigator.vibrate(50);
-                    }
-                }
-                
-                progressBar.style.width = progress + '%';
-                percentage.textContent = Math.round(progress) + '%';
-            }, 100);
+        // 切换雪花
+        function toggleSnow() {
+            snowActive = !snowActive;
+            if (snowActive) {
+                createSnowflakes();
+            } else {
+                snowflakesContainer.innerHTML = '';
+            }
         }
         
-        // 显示玩笑页面
-        function showJoke() {
-            document.getElementById('resultPage').style.display = 'none';
-            document.getElementById('jokePage').style.display = 'flex';
+        // 打开礼物
+        function openGift(giftNumber) {
+            giftSound.currentTime = 0;
+            giftSound.play();
             
-            // 添加庆祝效果
+            // 礼物打开动画
+            const gift = document.querySelector(`.gift${giftNumber}`);
+            gift.style.transform = 'translateY(-20px) scale(1.2)';
+            
+            // 显示礼物内容
+            const messages = [
+                "🎁 恭喜！您获得了圣诞老人的祝福！",
+                "🎁 您获得了无限快乐券一张！",
+                "🎁 您获得了新年好运大礼包！",
+                "🎁 您获得了健康平安护身符！"
+            ];
+            
+            // 改变祝福语
+            const greetingElement = document.getElementById('greeting-text');
+            greetingElement.innerHTML = `<span style="color:#ffcc00; font-weight:bold;">${messages[giftNumber-1]}</span><br><br>${greetings[Math.floor(Math.random() * greetings.length)]}`;
+            
+            // 添加一些特效
+            for (let i = 0; i < 20; i++) {
+                createConfetti();
+            }
+            
             setTimeout(() => {
-                for(let i = 0; i < 50; i++) {
-                    createConfetti();
-                }
-            }, 500);
+                gift.style.transform = 'translateY(0) scale(1)';
+            }, 1000);
         }
         
-        // 创建彩色纸屑效果
+        // 创建彩色纸屑
         function createConfetti() {
-            const colors = ['#ff0000', '#00ff00', '#0000ff', '#ffff00', '#ff00ff', '#00ffff'];
             const confetti = document.createElement('div');
             confetti.style.cssText = `
                 position: fixed;
                 width: 10px;
                 height: 10px;
-                background: ${colors[Math.floor(Math.random() * colors.length)]};
+                background: ${lightColors[Math.floor(Math.random() * lightColors.length)]};
                 border-radius: 50%;
                 top: -10px;
                 left: ${Math.random() * 100}%;
-                z-index: 1000;
+                z-index: 100;
                 pointer-events: none;
             `;
             document.body.appendChild(confetti);
@@ -426,92 +748,88 @@
             animation.onfinish = () => confetti.remove();
         }
         
-        // 分享页面
-        function sharePage() {
-            const shareText = "哈哈，我被一个手机安全检测页面骗了！😂 你也来试试看！";
-            const pageUrl = window.location.href;
+        // 改变祝福语
+        function changeGreeting() {
+            const greetingElement = document.getElementById('greeting-text');
+            const randomGreeting = greetings[Math.floor(Math.random() * greetings.length)];
+            greetingElement.innerHTML = randomGreeting;
             
-            // 尝试使用Web Share API
-            if (navigator.share) {
-                navigator.share({
-                    title: '手机安全检测恶搞',
-                    text: shareText,
-                    url: pageUrl
-                })
-                .then(() => console.log('分享成功'))
-                .catch((error) => {
-                    // 如果分享失败，复制到剪贴板
-                    copyToClipboard(shareText + '\n' + pageUrl);
-                });
-            } else {
-                // 如果不支持Web Share API，则复制到剪贴板
-                copyToClipboard(shareText + '\n' + pageUrl);
-                alert('分享内容已复制到剪贴板！\n\n快去粘贴给朋友吧！');
-            }
-        }
-        
-        // 复制到剪贴板
-        function copyToClipboard(text) {
-            const textarea = document.createElement('textarea');
-            textarea.value = text;
-            document.body.appendChild(textarea);
-            textarea.select();
-            document.execCommand('copy');
-            document.body.removeChild(textarea);
-        }
-        
-        // 重新开始
-        function restart() {
-            // 移除所有错误代码
-            document.querySelectorAll('.error-code').forEach(el => el.remove());
-            
-            // 重置页面显示
-            document.getElementById('jokePage').style.display = 'none';
-            document.getElementById('startPage').style.display = 'flex';
-            document.getElementById('scanPage').style.display = 'none';
-            document.getElementById('resultPage').style.display = 'none';
-            
-            // 重置进度条
-            document.getElementById('progressBar').style.width = '0%';
-            document.getElementById('percentage').textContent = '0%';
-            document.getElementById('virusCount').textContent = '已检测到病毒：0个';
-        }
-        
-        // 阻止常见快捷键
-        document.addEventListener('keydown', (e) => {
-            // 阻止F12、Ctrl+Shift+I等开发者工具快捷键
-            if(e.key === 'F12' || (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'J'))) {
-                e.preventDefault();
-                alert('调试功能已被禁用！');
-            }
-            
-            // 阻止页面刷新
-            if(e.key === 'F5' || (e.ctrlKey && e.key === 'r')) {
-                e.preventDefault();
-                alert('页面刷新已被阻止！');
-            }
-        });
-        
-        // 阻止右键菜单
-        document.addEventListener('contextmenu', e => {
-            e.preventDefault();
-            alert('右键菜单已被禁用！');
-        });
-        
-        // 页面加载时初始化
-        window.onload = function() {
-            // 添加一些初始效果
+            // 添加动画效果
+            greetingElement.style.opacity = 0;
             setTimeout(() => {
-                document.querySelector('.warning-icon').style.animation = 'pulse 1s infinite';
-            }, 500);
+                greetingElement.style.opacity = 1;
+            }, 300);
+        }
+        
+        // 音乐控制
+        document.getElementById('playBtn').addEventListener('click', function() {
+            bgMusic.play();
+            musicPlaying = true;
+        });
+        
+        document.getElementById('pauseBtn').addEventListener('click', function() {
+            bgMusic.pause();
+            musicPlaying = false;
+        });
+        
+        document.getElementById('volumeControl').addEventListener('input', function() {
+            bgMusic.volume = this.value / 100;
+        });
+        
+        // 星星点击效果
+        star.addEventListener('click', function() {
+            this.style.transform = 'translateX(-50%) scale(1.5)';
+            this.style.color = '#ffcc00';
+            setTimeout(() => {
+                this.style.transform = 'translateX(-50%) scale(1)';
+            }, 300);
             
-            // 为微信添加特殊提示
-            const isWechat = /MicroMessenger/i.test(navigator.userAgent);
-            if(isWechat) {
-                const tip = document.querySelector('.wechat-tip');
-                tip.innerHTML = '提示：点击右上角"..."可以分享给朋友<br>这只是一个娱乐页面，不会对您的手机造成任何影响';
+            // 添加闪烁效果
+            for (let i = 0; i < 10; i++) {
+                setTimeout(() => {
+                    createSparkle();
+                }, i * 100);
             }
-        };
+        });
+        
+        // 创建星星闪烁效果
+        function createSparkle() {
+            const sparkle = document.createElement('div');
+            sparkle.style.cssText = `
+                position: absolute;
+                width: 5px;
+                height: 5px;
+                background: gold;
+                border-radius: 50%;
+                top: ${Math.random() * 100}px;
+                left: ${Math.random() * 100}%;
+                z-index: 5;
+                pointer-events: none;
+                box-shadow: 0 0 10px gold;
+            `;
+            document.querySelector('.tree-container').appendChild(sparkle);
+            
+            setTimeout(() => {
+                sparkle.remove();
+            }, 1000);
+        }
+        
+        // 页面加载完成后初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeTree();
+            
+            // 自动播放音乐（需要用户交互）
+            document.body.addEventListener('click', function initMusic() {
+                if (!musicPlaying) {
+                    bgMusic.play().then(() => {
+                        musicPlaying = true;
+                    }).catch(e => {
+                        console.log("自动播放被阻止，请手动点击播放按钮");
+                    });
+                }
+                document.body.removeEventListener('click', initMusic);
+            });
+        });
     </script>
 </body>
 </html>
